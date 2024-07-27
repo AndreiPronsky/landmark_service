@@ -33,6 +33,6 @@ public class LandmarkServiceImpl implements LandmarkService {
 
     @Override
     public void delete(LandmarkDto dto) {
-
+        throw new UnsupportedOperationException("Delete not supported");
     }
 }
