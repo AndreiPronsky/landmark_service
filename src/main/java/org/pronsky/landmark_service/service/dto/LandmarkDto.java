@@ -2,7 +2,7 @@ package org.pronsky.landmark_service.service.dto;
 
 import lombok.Data;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
 public class LandmarkDto {
@@ -12,7 +12,7 @@ public class LandmarkDto {
     private String description;
     private LandmarkType type;
     private SettlementDto settlement;
-    private Set<ServiceDto> services;
+    private List<ServiceDto> services;
 
     public enum LandmarkType {
         ARCHITECTURE,
