@@ -22,5 +22,7 @@ public class Settlement {
 
     @OneToMany
     private Set<Landmark> landmarks;
+
+    @Column(name = "has_subway")
     private boolean hasSubway;
 }
