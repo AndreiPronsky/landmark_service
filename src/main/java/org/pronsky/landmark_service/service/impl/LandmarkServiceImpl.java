@@ -23,9 +23,9 @@ public class LandmarkServiceImpl implements LandmarkService {
     private final EntityDtoMapper mapper;
 
     @Override
-    public List<LandmarkDto> getAllByTypeSorted(SettlementDto dto, String landmarkType, String sortingParam) {
+    public List<LandmarkDto> getAllByTypeSorted(String landmarkType, String sortingParam) {
         List<LandmarkDto> dtoList = repository
-                .findAllBySettlementIdAndType(dto.getId(), Landmark.LandmarkType.valueOf(landmarkType))
+                .findAllByType(Landmark.LandmarkType.valueOf(landmarkType))
                 .stream()
                 .map(mapper::toDto)
                 .sorted(Comparator.comparing(LandmarkDto::getName))

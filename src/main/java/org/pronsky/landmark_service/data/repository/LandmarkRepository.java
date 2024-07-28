@@ -7,5 +7,5 @@ import java.util.Set;
 
 public interface LandmarkRepository extends JpaRepository<Landmark, Long> {
     Set<Landmark> findAllBySettlementId(Long settlementId);
-    Set<Landmark> findAllBySettlementIdAndType(Long settlementId, Landmark.LandmarkType landmarkType);
+    Set<Landmark> findAllByType(Landmark.LandmarkType landmarkType);
 }
