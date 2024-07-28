@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.pronsky.landmark_service.data.converters.LandmarkTypeConverter;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Entity
@@ -33,7 +33,7 @@ public class Landmark {
     private Settlement settlement;
 
     @OneToMany
-    private Set<Service> services;
+    private List<Service> services;
 
     @Table(name = "landmark_types")
     public enum LandmarkType {

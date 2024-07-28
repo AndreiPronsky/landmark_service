@@ -3,7 +3,7 @@ package org.pronsky.landmark_service.data.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Entity
@@ -22,5 +22,5 @@ public class Service {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "landmarks", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "id"))
-    private Set<Landmark> landmarks;
+    private List<Landmark> landmarks;
 }
