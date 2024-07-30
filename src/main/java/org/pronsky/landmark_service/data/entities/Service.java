@@ -10,7 +10,7 @@ import java.util.List;
 @Table(name = "services")
 public class Service {
     @Id
-    @Column(name = "id")
+    @Column(name = "service_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -21,6 +21,6 @@ public class Service {
     private String description;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "landmarks", joinColumns = @JoinColumn(name = "id"), inverseJoinColumns = @JoinColumn(name = "id"))
+    @JoinTable(name = "landmarks", joinColumns = @JoinColumn(name = "landmark_id"), inverseJoinColumns = @JoinColumn(name = "service_id"))
     private List<Landmark> landmarks;
 }

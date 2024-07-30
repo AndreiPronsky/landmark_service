@@ -18,7 +18,7 @@ import java.util.List;
 public class LandmarkController {
     private final LandmarkService service;
 
-    @GetMapping
+    @GetMapping("/by_settlement")
     public ResponseEntity<List<LandmarkDto>> getAllBySettlement(@RequestBody SettlementDto settlement) {
         List<LandmarkDto> dtoList = service.getAllBySettlement(settlement);
         return new ResponseEntity<>(dtoList, HttpStatus.OK);

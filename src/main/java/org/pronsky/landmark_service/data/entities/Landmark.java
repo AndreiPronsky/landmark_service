@@ -12,7 +12,7 @@ import java.util.List;
 public class Landmark {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "landmark_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

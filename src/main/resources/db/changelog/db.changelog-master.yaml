@@ -1,0 +1,167 @@
+---
+databaseChangeLog:
+#  - changeSet:
+#      id: drop-tables
+#      author: Andrei Pronsky
+#      changes:
+#        - dropTable:
+#            tableName: landmarks
+#            cascadeConstraints: true
+#        - dropTable:
+#            tableName: landmarks_services
+#            cascadeConstraints: true
+#        - dropTable:
+#            tableName: services
+#            cascadeConstraints: true
+#        - dropTable:
+#            tableName: settlements
+#            cascadeConstraints: true
+#        - dropTable:
+#            tableName: settlements_landmarks
+#            cascadeConstraints: true
+  - changeSet:
+      id: create-tables
+      author: Andrei Pronsky
+      changes:
+        - createTable:
+            tableName: landmarks
+            columns:
+              - column:
+                  name: landmark_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: creation_year
+                  type: SMALLINT
+              - column:
+                  name: type_id
+                  type: INTEGER
+              - column:
+                  name: service_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: settlement_id
+                  type: BIGINT
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+        - createTable:
+            tableName: landmarks_services
+            columns:
+              - column:
+                  name: landmark_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: service_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    unique: true
+        - createTable:
+            tableName: services
+            columns:
+              - column:
+                  name: service_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(255)
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+        - createTable:
+            tableName: settlements
+            columns:
+              - column:
+                  name: settlement_id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: has_subway
+                  type: BOOLEAN
+              - column:
+                  name: population
+                  type: BIGINT
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+        - createTable:
+            tableName: settlements_landmarks
+            columns:
+              - column:
+                  name: landmark_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: settlement_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: add-foreign-keys
+      author: Andrei Pronsky
+      changes:
+        - addPrimaryKey:
+            tableName: settlements_landmarks
+            columnNames: landmark_id, settlement_id
+        - addForeignKeyConstraint:
+            baseTableName: settlements_landmarks
+            baseColumnNames: landmark_id
+            constraintName: landmarks_settlements_foreign
+            referencedTableName: landmarks
+            referencedColumnNames: landmark_id
+        - addForeignKeyConstraint:
+            baseTableName: landmarks
+            baseColumnNames: settlement_id
+            constraintName: landmarks_settlements_fk
+            referencedTableName: settlements
+            referencedColumnNames: settlement_id
+        - addForeignKeyConstraint:
+            baseTableName: landmarks
+            baseColumnNames: service_id
+            constraintName: landmarks_services_fk
+            referencedTableName: services
+            referencedColumnNames: service_id
+        - addForeignKeyConstraint:
+            baseTableName: landmarks_services
+            baseColumnNames: service_id
+            constraintName: landmarks_services_foreign
+            referencedTableName: services
+            referencedColumnNames: service_id
+        - addForeignKeyConstraint:
+            baseTableName: landmarks_services
+            baseColumnNames: landmark_id
+            constraintName: landmarks_services_forKey
+            referencedTableName: landmarks
+            referencedColumnNames: landmark_id
+        - addForeignKeyConstraint:
+            baseTableName: settlements_landmarks
+            baseColumnNames: landmark_id
+            constraintName: landmarks_settlements_forKey
+            referencedTableName: landmarks
+            referencedColumnNames: landmark_id
+        - addForeignKeyConstraint:
+            baseTableName: settlements_landmarks
+            baseColumnNames: settlement_id
+            constraintName: settlements_landmarks_fk
+            referencedTableName: settlements
+            referencedColumnNames: settlement_id

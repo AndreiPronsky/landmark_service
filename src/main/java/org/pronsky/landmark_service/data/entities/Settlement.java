@@ -11,7 +11,7 @@ import java.util.Set;
 public class Settlement {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "settlement_id")
     private Long id;
 
     @Column(name = "name")
