@@ -1,0 +1,29 @@
+server:
+  port: 8080
+spring:
+  jpa:
+    show-sql: true
+    properties:
+#      jakarta:
+#        persistence:
+#          schema-generation:
+#            scripts:
+#              action: create
+#              create-target: schema.sql
+#              create-source: metadata
+      hibernate:
+        hbm2ddl:
+          auto: none
+          output-schema-as-sql: true
+          create-schemas: true
+          create-source: metadata
+          schema-action: drop-and-create
+      liquibase:
+        enabled: true
+        drop-all: true
+        change-log: classpath:db/changelog/db.changelog-master.yaml
+  datasource:
+    username: postgres
+    password: root
+    url: jdbc:postgresql://landmarks-db:5432/landmarks
+    driver-class-name: org.postgresql.Driver

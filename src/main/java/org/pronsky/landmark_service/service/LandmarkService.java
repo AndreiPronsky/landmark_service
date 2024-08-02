@@ -1,18 +1,18 @@
 package org.pronsky.landmark_service.service;
 
-import org.pronsky.landmark_service.service.dto.LandmarkDto;
-import org.pronsky.landmark_service.service.dto.SettlementDto;
+import org.pronsky.landmark_service.service.dto.LandmarkFullDto;
+import org.pronsky.landmark_service.service.dto.LandmarkTrimmedDto;
 
 import java.util.List;
 
 public interface LandmarkService {
-    List<LandmarkDto> getAllByTypeSorted(String landmarkType, String sortingParam);
+    List<LandmarkFullDto> getAllByTypeSorted(String landmarkType, String sortingParam);
 
-    List<LandmarkDto> getAllBySettlement(SettlementDto settlement);
+    List<LandmarkFullDto> getAllBySettlement(String settlement);
 
-    LandmarkDto create(LandmarkDto dto);
+    LandmarkFullDto create(LandmarkTrimmedDto dto);
 
-    LandmarkDto update(LandmarkDto dto);
+    LandmarkFullDto update(LandmarkTrimmedDto dto);
 
-    void delete(LandmarkDto dto);
+    void delete(Long id);
 }

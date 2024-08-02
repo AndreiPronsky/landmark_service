@@ -12,7 +12,7 @@ import java.util.List;
 public class Landmark {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "landmark_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -30,6 +30,7 @@ public class Landmark {
     private LandmarkType type;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "settlement_id")
     private Settlement settlement;
 
     @OneToMany
