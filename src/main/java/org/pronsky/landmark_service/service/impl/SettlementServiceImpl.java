@@ -16,16 +16,18 @@ public class SettlementServiceImpl implements SettlementService {
     private final SettlementRepository repository;
 
     @Override
-    public SettlementDto create(SettlementDto settlementDto) {
-        return mapper.toDto(repository.save(mapper.toEntity(settlementDto)));
+    public SettlementDto create(SettlementDto dto) {
+        log.info("METHOD CALL: SettlementService.create({})", dto);
+        return mapper.toDto(repository.save(mapper.toEntity(dto)));
     }
 
     @Override
-    public SettlementDto update(SettlementDto settlementDto) {
-        SettlementDto fetched = mapper.toDto(repository.findById(settlementDto.getId())
+    public SettlementDto update(SettlementDto dto) {
+        log.info("METHOD CALL: SettlementService.update({})", dto);
+        SettlementDto fetched = mapper.toDto(repository.findById(dto.getId())
                 .orElseThrow(UnsupportedOperationException::new));
-        if (allMatchExceptPopulationAndSubway(settlementDto, fetched)) {
-            return mapper.toDto(repository.save(mapper.toEntity(settlementDto)));
+        if (allMatchExceptPopulationAndSubway(dto, fetched)) {
+            return mapper.toDto(repository.save(mapper.toEntity(dto)));
         }
         throw new UnsupportedOperationException("Forbidden to update anything except subway and population");
     }
