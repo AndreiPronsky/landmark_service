@@ -21,10 +21,16 @@ public interface EntityDtoMapper {
         landmarkFullDto.setCreationYear(trimmed.getCreationYear());
         return landmarkFullDto;
     }
+
     LandmarkFullDto toDto(Landmark entity);
+
     Landmark toEntity(LandmarkFullDto dto);
+
     SettlementDto toDto(Settlement entity);
+
     Settlement toEntity(SettlementDto dto);
+
     ServiceDto toDto(Service entity);
+
     Service toEntity(ServiceDto dto);
 }
