@@ -30,6 +30,7 @@ public class Landmark {
     private LandmarkType type;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "settlement_id")
     private Settlement settlement;
 
     @OneToMany

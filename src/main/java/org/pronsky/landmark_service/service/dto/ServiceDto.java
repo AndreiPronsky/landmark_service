@@ -1,13 +1,16 @@
 package org.pronsky.landmark_service.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 public class ServiceDto {
+    @JsonProperty("id")
     private Long id;
+    @JsonProperty("name")
     private String name;
+    @JsonProperty("description")
     private String description;
-    private List<LandmarkDto> landmarks;
+    @JsonProperty("landmarkId")
+    private Long landmarkId;
 }
