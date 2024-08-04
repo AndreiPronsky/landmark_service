@@ -4,13 +4,13 @@ spring:
   jpa:
     show-sql: true
     properties:
-#      jakarta:
-#        persistence:
-#          schema-generation:
-#            scripts:
-#              action: create
-#              create-target: schema.sql
-#              create-source: metadata
+      #      jakarta:
+      #        persistence:
+      #          schema-generation:
+      #            scripts:
+      #              action: create
+      #              create-target: schema.sql
+      #              create-source: metadata
       hibernate:
         hbm2ddl:
           auto: none
