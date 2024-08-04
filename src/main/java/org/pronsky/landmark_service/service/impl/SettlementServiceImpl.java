@@ -25,7 +25,7 @@ public class SettlementServiceImpl implements SettlementService {
     public SettlementDto update(SettlementDto dto) {
         log.info("METHOD CALL: SettlementService.update({})", dto);
         SettlementDto fetched = mapper.toDto(repository.findById(dto.getId())
-                .orElseThrow(UnsupportedOperationException::new));
+                .orElseThrow(NullPointerException::new));
         if (allMatchExceptPopulationAndSubway(dto, fetched)) {
             return mapper.toDto(repository.save(mapper.toEntity(dto)));
         }
@@ -33,9 +33,7 @@ public class SettlementServiceImpl implements SettlementService {
     }
 
     private boolean allMatchExceptPopulationAndSubway(SettlementDto forUpdate, SettlementDto fetched) {
-        return !(forUpdate.isHasSubway() == fetched.isHasSubway() ||
-                forUpdate.getPopulation().equals(fetched.getPopulation())) &&
-                forUpdate.getName().equals(fetched.getName()) &&
-                forUpdate.getLandmarks().equals(fetched.getLandmarks());
+        return (forUpdate.getName().equals(fetched.getName()) &&
+                forUpdate.getLandmarks().equals(fetched.getLandmarks()));
     }
 }

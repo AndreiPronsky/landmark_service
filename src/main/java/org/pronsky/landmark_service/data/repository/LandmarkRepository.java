@@ -25,4 +25,28 @@ public interface LandmarkRepository extends JpaRepository<Landmark, Long> {
      * @return a list of landmarks of the specified type
      */
     List<Landmark> findAllByType(Landmark.LandmarkType landmarkType);
+
+    /**
+     * Retrieves a list of landmarks of the specified type ordered by settlement name.
+     *
+     * @param landmarkType the type of landmarks to retrieve
+     * @return a list of landmarks of the specified type
+     */
+    List<Landmark> findAllByTypeOrderBySettlementName(Landmark.LandmarkType landmarkType);
+
+    /**
+     * Retrieves a list of landmarks of the specified type ordered by name.
+     *
+     * @param landmarkType the type of landmarks to retrieve
+     * @return a list of landmarks of the specified type
+     */
+    List<Landmark> findAllByTypeOrderByName(Landmark.LandmarkType landmarkType);
+
+    /**
+     * Retrieves a list of landmarks of the specified type ordered by creation year.
+     *
+     * @param landmarkType the type of landmarks to retrieve
+     * @return a list of landmarks of the specified type
+     */
+    List<Landmark> findAllByTypeOrderByCreationYear(Landmark.LandmarkType landmarkType);
 }

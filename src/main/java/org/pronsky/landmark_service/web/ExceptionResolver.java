@@ -34,4 +34,10 @@ public class ExceptionResolver {
     public void handleInternalServerError(Exception e) {
         log.error(e.getMessage());
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public void handleNotFound(NullPointerException e) {
+        log.error(e.getMessage());
+    }
 }
