@@ -1,50 +1,60 @@
 package org.pronsky.landmark_service.web;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.pronsky.landmark_service.service.LandmarkService;
 import org.pronsky.landmark_service.service.dto.LandmarkFullDto;
 import org.pronsky.landmark_service.service.dto.LandmarkTrimmedDto;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Slf4j
-@RestController
-@RequiredArgsConstructor
-@RequestMapping("/api/landmarks")
-public class LandmarkController {
-    private final LandmarkService service;
+/**
+ * Provides REST endpoints for managing landmarks.
+ */
+public interface LandmarkController {
 
+    /**
+     * Retrieves a list of landmarks located in the specified settlement.
+     *
+     * @param settlement the settlement for which to retrieve landmarks
+     * @return a list of landmarks located in the specified settlement
+     */
     @GetMapping("/by_settlement")
-    public ResponseEntity<List<LandmarkFullDto>> getAllBySettlement(@RequestParam String settlement) {
-        List<LandmarkFullDto> dtoList = service.getAllBySettlement(settlement);
-        return new ResponseEntity<>(dtoList, HttpStatus.OK);
-    }
+    ResponseEntity<List<LandmarkFullDto>> getAllBySettlement(@RequestParam String settlement);
 
+    /**
+     * Retrieves a list of landmarks, sorted by the given parameter and filtered by type.
+     *
+     * @param sortingParam the parameter to sort the landmarks by
+     * @param type         the type of landmarks to retrieve
+     * @return a list of landmarks, sorted by the given parameter and filtered by type
+     */
     @GetMapping
-    public ResponseEntity<List<LandmarkFullDto>> getAll(@RequestParam String sortingParam, @RequestParam String type) {
-        List<LandmarkFullDto> dtoList = service.getAllByTypeSorted(type, sortingParam);
-        return new ResponseEntity<>(dtoList, HttpStatus.OK);
-    }
+    ResponseEntity<List<LandmarkFullDto>> getAll(@RequestParam String sortingParam, @RequestParam String type);
 
+    /**
+     * Creates a new landmark based on the provided data transfer object.
+     *
+     * @param landmark the data transfer object containing the landmark data
+     * @return the created landmark
+     */
     @PostMapping
-    public ResponseEntity<LandmarkFullDto> doPost(@RequestBody LandmarkTrimmedDto landmark) {
-        LandmarkFullDto created = service.create(landmark);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
-    }
+    ResponseEntity<LandmarkFullDto> doPost(@RequestBody LandmarkTrimmedDto landmark);
 
+    /**
+     * Updates an existing landmark based on the provided data transfer object.
+     *
+     * @param landmark the data transfer object containing the updated landmark data
+     * @return the updated landmark
+     */
     @PatchMapping
-    public ResponseEntity<LandmarkFullDto> doPatch(@RequestBody LandmarkTrimmedDto landmark) {
-        LandmarkFullDto updated = service.update(landmark);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(updated);
-    }
+    ResponseEntity<LandmarkFullDto> doPatch(@RequestBody LandmarkTrimmedDto landmark);
 
+    /**
+     * Deletes a landmark with the specified ID.
+     *
+     * @param id the ID of the landmark to delete
+     * @return the deleted landmark
+     */
     @DeleteMapping
-    public ResponseEntity<LandmarkFullDto> doDelete(@RequestParam Long id) {
-        service.delete(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
+    ResponseEntity<LandmarkFullDto> doDelete(@RequestParam Long id);
 }

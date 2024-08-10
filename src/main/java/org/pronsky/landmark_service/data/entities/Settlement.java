@@ -1,11 +1,13 @@
 package org.pronsky.landmark_service.data.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.List;
-
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @Entity
 @Table(name = "settlements")
 public class Settlement {
@@ -20,9 +22,6 @@ public class Settlement {
 
     @Column(name = "population")
     private Long population;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Landmark> landmarks;
 
     @Column(name = "has_subway")
     private boolean hasSubway;

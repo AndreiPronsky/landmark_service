@@ -15,8 +15,6 @@ import org.pronsky.landmark_service.service.dto.SettlementDto;
 import org.pronsky.landmark_service.service.mapper.EntityDtoMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,17 +31,11 @@ public class LandmarkServiceImpl implements LandmarkService {
     @Override
     public List<LandmarkFullDto> getAllByTypeSorted(String landmarkType, String sortingParam) {
         log.info("METHOD CALL: LandmarkService.getAllByTypeSorted({}, {})", landmarkType, sortingParam);
-        List<LandmarkFullDto> dtoList = landmarkRepository
-                .findAllByType(Landmark.LandmarkType.valueOf(landmarkType))
-                .stream()
+        Landmark.LandmarkType type = Landmark.LandmarkType.valueOf(landmarkType);
+        List<Landmark> landmarks = getLandmarks(sortingParam, type);
+        return landmarks.stream()
                 .map(mapper::toDto)
-                .sorted(Comparator.comparing(LandmarkFullDto::getName))
                 .collect(Collectors.toList());
-        if (sortingParam.equals("desc")) {
-            Collections.reverse(dtoList);
-        }
-        log.info("LandmarkService.getAllByTypeSorted() returned {}", dtoList);
-        return dtoList;
     }
 
     @Override
@@ -72,10 +64,11 @@ public class LandmarkServiceImpl implements LandmarkService {
     public LandmarkFullDto update(LandmarkTrimmedDto dto) {
         log.info("METHOD CALL: LandmarkService.update({})", dto);
         LandmarkFullDto fetched = mapper.toDto(landmarkRepository.findById(dto.getId())
-                .orElseThrow(UnsupportedOperationException::new));
-        if (allSameExceptDescription(dto, fetched)) {
-            LandmarkFullDto fullDto = mapper.toFullLandmarkDto(dto);
-            fullDto.setSettlement(mapper.toDto(settlementRepository.findByName(dto.getName())));
+                .orElseThrow(NullPointerException::new));
+        LandmarkFullDto fullDto = mapper.toFullLandmarkDto(dto);
+        SettlementDto settlement = mapper.toDto(settlementRepository.findByName(dto.getSettlementName()));
+        fullDto.setSettlement(settlement);
+        if (allSameExceptDescription(fullDto, fetched)) {
             return mapper.toDto(landmarkRepository.save(mapper.toEntity(fullDto)));
         }
         throw new UnsupportedOperationException("Forbidden to update anything except description");
@@ -87,13 +80,11 @@ public class LandmarkServiceImpl implements LandmarkService {
         landmarkRepository.deleteById(id);
     }
 
-    private boolean allSameExceptDescription(LandmarkTrimmedDto forUpdate, LandmarkFullDto fetched) {
-        return (!forUpdate.getDescription().equals(fetched.getDescription()) &&
-                forUpdate.getName().equals(fetched.getName()) &&
+    private boolean allSameExceptDescription(LandmarkFullDto forUpdate, LandmarkFullDto fetched) {
+        return forUpdate.getName().equals(fetched.getName()) &&
                 forUpdate.getType().name().equals(fetched.getType().name()) &&
                 forUpdate.getCreationYear().equals(fetched.getCreationYear()) &&
-                forUpdate.getServices().equals(fetched.getServices()) &&
-                forUpdate.getSettlementName().equals(fetched.getSettlement().getName()));
+                (forUpdate.getSettlement().getName()).equals(fetched.getSettlement().getName());
     }
 
     private List<ServiceDto> createServices(LandmarkTrimmedDto dto) {
@@ -115,5 +106,16 @@ public class LandmarkServiceImpl implements LandmarkService {
                 .toList();
         serviceRepository.saveAll(services.stream().map(mapper::toEntity).toList());
         return services;
+    }
+
+    private List<Landmark> getLandmarks(String sortingParam, Landmark.LandmarkType type) {
+        List<Landmark> landmarks;
+        switch (sortingParam) {
+            case "name" -> landmarks = landmarkRepository.findAllByTypeOrderByName(type);
+            case "settlementName" -> landmarks = landmarkRepository.findAllByTypeOrderBySettlementName(type);
+            case "creationYear" -> landmarks = landmarkRepository.findAllByTypeOrderByCreationYear(type);
+            default -> landmarks = landmarkRepository.findAllByType(type);
+        }
+        return landmarks;
     }
 }

@@ -1,11 +1,13 @@
 package org.pronsky.landmark_service.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Set;
-
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 public class SettlementDto {
     @JsonProperty("id")
     private Long id;
@@ -13,8 +15,6 @@ public class SettlementDto {
     private String name;
     @JsonProperty("population")
     private Long population;
-    @JsonProperty("landmarks")
-    private Set<LandmarkFullDto> landmarks;
     @JsonProperty("hasSubway")
     private boolean hasSubway;
 }

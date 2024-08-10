@@ -1,29 +1,31 @@
 package org.pronsky.landmark_service.web;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.pronsky.landmark_service.service.SettlementService;
 import org.pronsky.landmark_service.service.dto.SettlementDto;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
-@Slf4j
-@RestController
-@RequiredArgsConstructor
-@RequestMapping("/api/settlements")
-public class SettlementController {
-    private final SettlementService service;
+/**
+ * Provides REST endpoints for managing settlements.
+ */
+public interface SettlementController {
 
+    /**
+     * Creates a new settlement based on the provided data transfer object.
+     *
+     * @param settlement the data transfer object containing the settlement data
+     * @return the created settlement
+     */
     @PostMapping
-    public ResponseEntity<SettlementDto> doPost(@RequestBody SettlementDto settlement) {
-        SettlementDto created = service.create(settlement);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
-    }
+    ResponseEntity<SettlementDto> doPost(@RequestBody SettlementDto settlement);
 
+    /**
+     * Updates an existing settlement based on the provided data transfer object.
+     *
+     * @param settlement the data transfer object containing the updated settlement data
+     * @return the updated settlement
+     */
     @PatchMapping
-    public ResponseEntity<SettlementDto> doPatch(@RequestBody SettlementDto settlement) {
-        SettlementDto updated = service.update(settlement);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(updated);
-    }
+    ResponseEntity<SettlementDto> doPatch(@RequestBody SettlementDto settlement);
 }
