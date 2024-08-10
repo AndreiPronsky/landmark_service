@@ -5,16 +5,18 @@ services:
       - "7000:8080"
       - "5005:5005"
     environment:
-      - POSTGRES_PASSWORD=root
-      - POSTGRES_USERNAME=postgres
-      - POSTGRES_URL=jdbc:postgresql://landmarks-db:5432/landmarks
-#      - JAVA_TOOL_OPTIONS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://landmarks-db:5432/landmarks
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+      #      - SPRING_LIQUIBASE_CHANGELOG=classpath:/db/changelog/db.changelog-master.yaml
+      #      - JAVA_TOOL_OPTIONS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
     depends_on:
-      - landmarks-db
+        - landmarks-db
   landmarks-db:
-    image: postgres
-    expose:
-      - 5432
+    image: postgres:latest
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_USERNAME=postgres
       - POSTGRES_PASSWORD=root

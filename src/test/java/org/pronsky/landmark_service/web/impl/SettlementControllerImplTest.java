@@ -2,12 +2,12 @@ package org.pronsky.landmark_service.web.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.pronsky.landmark_service.BaseTest;
 import org.pronsky.landmark_service.service.SettlementService;
-import org.pronsky.landmark_service.service.dto.SettlementDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -17,21 +17,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(SettlementControllerImpl.class)
-class SettlementControllerImplTest {
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+class SettlementControllerImplTest extends BaseTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private SettlementService service;
-
-    private SettlementDto settlementDto;
-
-    @BeforeEach
-    void setUp() {
-        settlementDto = new SettlementDto();
-    }
 
     @Test
     void testDoPost() throws Exception {

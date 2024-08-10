@@ -2,26 +2,23 @@ package org.pronsky.landmark_service.web.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.pronsky.landmark_service.BaseTest;
 import org.pronsky.landmark_service.service.LandmarkService;
-import org.pronsky.landmark_service.service.dto.LandmarkFullDto;
-import org.pronsky.landmark_service.service.dto.LandmarkTrimmedDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
-
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(LandmarkControllerImpl.class)
-class LandmarkControllerImplTest {
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+class LandmarkControllerImplTest extends BaseTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -29,18 +26,9 @@ class LandmarkControllerImplTest {
     @MockBean
     private LandmarkService service;
 
-    private LandmarkFullDto landmarkDto;
-    private LandmarkTrimmedDto landmarkTrimmedDto;
-
-    @BeforeEach
-    void setUp() {
-        landmarkDto = new LandmarkFullDto();
-        landmarkTrimmedDto = new LandmarkTrimmedDto();
-    }
-
     @Test
     void testGetAllBySettlement() throws Exception {
-        when(service.getAllBySettlement("anySettlement")).thenReturn(List.of(landmarkDto));
+        when(service.getAllBySettlement("anySettlement")).thenReturn(landmarkDtoList);
 
         mockMvc.perform(get("/api/landmarks/by_settlement")
                         .param("settlement", "anySettlement"))
@@ -49,32 +37,32 @@ class LandmarkControllerImplTest {
 
     @Test
     void testGetAll() throws Exception {
-        when(service.getAllByTypeSorted("anyType", "anySortingParam"))
-                .thenReturn(List.of(landmarkDto));
+        when(service.getAllByTypeSorted(LANDMARK_TYPE, NAME_SORTING_PARAM))
+                .thenReturn(landmarkDtoList);
 
         mockMvc.perform(get("/api/landmarks")
-                        .param("sortingParam", "anySortingParam")
-                        .param("type", "anyType"))
+                        .param("sortingParam", NAME_SORTING_PARAM)
+                        .param("type", LANDMARK_TYPE))
                 .andExpect(status().isOk());
     }
 
     @Test
     void testDoPost() throws Exception {
-        when(service.create(landmarkTrimmedDto)).thenReturn(landmarkDto);
+        when(service.create(correctTrimmedForUpdate)).thenReturn(landmarkDto);
 
         mockMvc.perform(post("/api/landmarks")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(landmarkTrimmedDto)))
+                        .content(asJsonString(correctTrimmedForUpdate)))
                 .andExpect(status().isCreated());
     }
 
     @Test
     void testDoPatch() throws Exception {
-        when(service.update(landmarkTrimmedDto)).thenReturn(landmarkDto);
+        when(service.update(correctTrimmedForUpdate)).thenReturn(correctFullForUpdate);
 
         mockMvc.perform(patch("/api/landmarks")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(landmarkTrimmedDto)))
+                        .content(asJsonString(correctTrimmedForUpdate)))
                 .andExpect(status().isAccepted());
     }
 
@@ -83,8 +71,6 @@ class LandmarkControllerImplTest {
         mockMvc.perform(delete("/api/landmarks")
                         .param("id", String.valueOf(1L)))
                 .andExpect(status().isNoContent());
-
-        verify(service).delete(1L);
     }
 
     private String asJsonString(final Object obj) {

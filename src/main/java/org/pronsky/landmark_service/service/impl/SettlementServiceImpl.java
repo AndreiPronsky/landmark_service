@@ -33,7 +33,6 @@ public class SettlementServiceImpl implements SettlementService {
     }
 
     private boolean allMatchExceptPopulationAndSubway(SettlementDto forUpdate, SettlementDto fetched) {
-        return (forUpdate.getName().equals(fetched.getName()) &&
-                forUpdate.getLandmarks().equals(fetched.getLandmarks()));
+        return (forUpdate.getName().equals(fetched.getName()));
     }
 }

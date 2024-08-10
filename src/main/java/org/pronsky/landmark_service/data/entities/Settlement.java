@@ -4,14 +4,10 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-
-import java.util.List;
 
 @Getter
 @Setter
 @EqualsAndHashCode
-@ToString(exclude = "landmarks")
 @Entity
 @Table(name = "settlements")
 public class Settlement {
@@ -26,9 +22,6 @@ public class Settlement {
 
     @Column(name = "population")
     private Long population;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Landmark> landmarks;
 
     @Column(name = "has_subway")
     private boolean hasSubway;
